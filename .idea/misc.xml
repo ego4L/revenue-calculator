@@ -15,11 +15,12 @@
     <option name="ignoredFiles">
       <set>
         <option value="$PROJECT_DIR$/another-boot/pom.xml" />
+        <option value="$PROJECT_DIR$/bulk-qit-upload-service/pom.xml" />
         <option value="$PROJECT_DIR$/bulk-upload-qit-service/pom.xml" />
       </set>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="17" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_21" project-jdk-name="corretto-21" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>
