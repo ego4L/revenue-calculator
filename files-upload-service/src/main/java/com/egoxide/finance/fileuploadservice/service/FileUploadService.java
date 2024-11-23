@@ -28,17 +28,28 @@ public class FileUploadService {
     private static final Pattern yearLine = Pattern.compile("^\\d{4}$");
     private static final Pattern monthLine = Pattern.compile("^\t\\d{2}$");
     private static final Pattern dayLine = Pattern.compile("^\\d{2}$");
-    private static final Pattern stockTransaction = Pattern.compile("^(\\d{4})\\s+(\\w{1,5})\\s+([+-]?[0-9]*[.]?[0-9]+)\\s+([+-]?[0-9]+)$");
-    private static final Pattern accountTransaction = Pattern.compile("^(\\d{4})\\s+([+-]?[0-9]+)$");
-    private static final Pattern commissionTransaction = Pattern.compile("^(\\d{4})\\s+COMMISSION\\s+([+-]?[0-9]+)$");
+    private static final Pattern stockTransaction = Pattern.compile("^(\\d{4})\\s+(\\w{1,5})\\s+([+-]?\\d*[.]?\\d+)\\s+([+-]?\\d+)$");
+    private static final Pattern accountTransaction = Pattern.compile("^(\\d{4})\\s+([+-]?\\d+)$");
+    private static final Pattern commissionTransaction = Pattern.compile("^(\\d{4})\\s+COMMISSION\\s+([+-]?\\d+)$");
 
     private final List<StockTransaction> stockTransactions = new ArrayList<>();
     private final List<AccountTransaction> accountTransactions = new ArrayList<>();
 
     private record HoursAndMinutes(int hours, int minutes) { }
     private record AccountTransaction(LocalDateTime dateTime, int amount, Action action) { }
-    private record ConsolidateActionsData(List<StockTransaction> stockTransactions, List<AccountTransaction> accountTransactions) { };
+    private record ConsolidateActionsData(List<StockTransaction> stockTransactions, List<AccountTransaction> accountTransactions) { }
 
+    final ObjectMapper mapper;
+    final ObjectWriter writer;
+
+    public FileUploadService() {
+
+        mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+
+        writer = mapper.writerWithDefaultPrettyPrinter();
+    }
 
     public ResponseEntity<Object> uploadFile(MultipartFile file) throws ParseTransactionDataException {
 
@@ -82,17 +93,12 @@ public class FileUploadService {
         return sendJsonToCalcService(consolidateActionsData);
     }
 
-    private static ResponseEntity<Object> sendJsonToCalcService(ConsolidateActionsData consolidateActionsData) {
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
-        ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
+    private ResponseEntity<Object> sendJsonToCalcService(ConsolidateActionsData consolidateActionsData) {
 
         String json;
 
         try {
-            json = ow.writeValueAsString(consolidateActionsData);
+            json = writer.writeValueAsString(consolidateActionsData);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
@@ -154,14 +160,15 @@ public class FileUploadService {
     }
 
     private static LocalDateTime buildLocalDateTime(int year, int month, int day, String hoursAndMinutes) {
+
         HoursAndMinutes time = parseTime(hoursAndMinutes);
         return LocalDateTime.of(year, month, day, time.hours(), time.minutes());
     }
 
     private static HoursAndMinutes parseTime(String hoursAndMinutes) {
 
-        int hours = Integer.parseInt(hoursAndMinutes.substring(0, 2));;
-        int minutes = Integer.parseInt(hoursAndMinutes.substring(2));
+        var hours = Integer.parseInt(hoursAndMinutes.substring(0, 2));
+        var minutes = Integer.parseInt(hoursAndMinutes.substring(2));
 
         return new HoursAndMinutes(hours, minutes);
     }

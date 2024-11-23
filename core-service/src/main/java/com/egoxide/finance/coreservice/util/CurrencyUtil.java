@@ -22,10 +22,8 @@ public class CurrencyUtil {
             try (InputStream in = new FileInputStream(file)) {
                 CurrencyData currencyData = mapper.readValue(in, CurrencyData.class);
                 result = currencyData.getRateByYear();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
             }
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
 

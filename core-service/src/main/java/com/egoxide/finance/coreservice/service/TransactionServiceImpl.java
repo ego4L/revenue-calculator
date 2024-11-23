@@ -61,7 +61,7 @@ public class TransactionServiceImpl implements TransactionService {
 
         for (String symbol : sellingSymbolsForYear) {
             List<Transaction> transactions = getTransactionsBySymbolChronologicallyTillYearInclusive(symbol, year);
-            Deque<Transaction> deque = new ArrayDeque<>();
+            Queue<Transaction> deque = new ArrayDeque<>();
 
             for (Transaction transaction : transactions) {
 
@@ -69,7 +69,7 @@ public class TransactionServiceImpl implements TransactionService {
                 int transMonth = transaction.getDateTime().getMonthValue();
 
                 switch (transaction.getAction()) {
-                    case BUY -> deque.addLast(transaction);
+                    case BUY -> deque.add(transaction);
                     case SELL -> {
                         double monthCurrencyRate = currencyRateMap.get(String.valueOf(year)).get(transMonth - 1);
                         int exchangedRevenue = (int) (transaction.getPrice() / monthCurrencyRate);
@@ -83,23 +83,22 @@ public class TransactionServiceImpl implements TransactionService {
                             Transaction buyTransaction = deque.peek();
                             int buyMonth = Objects.requireNonNull(buyTransaction).getDateTime().getMonthValue();
 
-
                             if (amount.compareTo(valueOf(Objects.requireNonNull(buyTransaction.getQuantity()))) >= 0) {
                                 purchasedStocks += (int) (buyTransaction.getPrice() / currencyRateMap.get(String.valueOf(transYear)).get(buyMonth - 1));
-                                amount = amount.subtract(BigDecimal.valueOf(buyTransaction.getQuantity()));
                                 deque.poll();
                             } else {
 
                                 buyTransaction.setQuantity(BigDecimal.valueOf(buyTransaction.getQuantity()).subtract(amount).doubleValue());
                                 purchasedStocks += (int) (amount.doubleValue() / currencyRateMap.get(String.valueOf(transYear)).get(buyMonth - 1));
-                                amount = amount.subtract(BigDecimal.valueOf(buyTransaction.getQuantity()));
                             }
+
+                            amount = amount.subtract(BigDecimal.valueOf(buyTransaction.getQuantity()));
+
                         } while (amount.compareTo(BigDecimal.valueOf(0)) > 0);
 
                         exchangedRevenue -= purchasedStocks;
 
-                        int finalExchangedRevenue = exchangedRevenue;
-                        result.merge(transYear, finalExchangedRevenue, Integer::sum);
+                        result.merge(transYear, exchangedRevenue, Integer::sum);
                     }
                     case DIVIDENDS -> {
 
@@ -107,12 +106,9 @@ public class TransactionServiceImpl implements TransactionService {
                         int exchangedRevenue = (int) (transaction.getPrice() / monthCurrencyRate);
                         result.merge(transYear, exchangedRevenue, Integer::sum);
                     }
-                    default -> System.out.println(transaction.getAction() + " ignored for revenue calculation");
                 }
             }
         }
-
-
 
         return result.containsKey(year) ? result.get(year) / 100.0 : 0.0;
     }
