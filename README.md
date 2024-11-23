@@ -16,8 +16,8 @@ The project consists of two microservices:
 
 ## API Endpoints
 
-API endpoints for the microservices are to be determined (TBD).
+TBD.
 
 ## QIT Format
 
-Details about the QIT format are also to be determined (TBD).
+TBD.
