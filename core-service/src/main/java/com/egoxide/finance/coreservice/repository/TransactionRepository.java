@@ -18,7 +18,7 @@ public interface TransactionRepository extends CrudRepository<Transaction, Long>
 
 
     @Query("SELECT t FROM Transaction t WHERE t.symbol = :symbol AND t.dateTime <= :endOfYear ORDER BY t.dateTime ASC")
-    List<Transaction> findAllChronologicallyBySymbolBeforeYearInclusive(
+    List<Transaction> findAllChronologicallyBySymbol(
             @Param("symbol") String symbol,
             @Param("endOfYear") LocalDateTime endOfYear
     );
