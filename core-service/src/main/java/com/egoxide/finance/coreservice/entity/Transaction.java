@@ -17,17 +17,17 @@ public class Transaction {
     @Id
     private String symbol;
     @Id
-    private Integer price;
+    private Integer priceUsd;
     private Double quantity;
     private Action action;
 
     public Transaction() {
     }
 
-    public Transaction(LocalDateTime dateTime, String symbol, Integer price, Double quantity, Action action) {
+    public Transaction(LocalDateTime dateTime, String symbol, Integer priceUsd, Double quantity, Action action) {
         this.dateTime = dateTime;
         this.symbol = symbol;
-        this.price = price;
+        this.priceUsd = priceUsd;
         this.quantity = quantity;
         this.action = action;
     }
@@ -63,12 +63,12 @@ public class Transaction {
         this.symbol = symbol;
     }
 
-    public Integer getPrice() {
-        return price;
+    public Integer getPriceUsd() {
+        return priceUsd;
     }
 
-    public void setPrice(Integer price) {
-        this.price = price;
+    public void setPriceUsd(Integer price) {
+        this.priceUsd = price;
     }
 
     public Double getQuantity() {
@@ -92,7 +92,7 @@ public class Transaction {
         return "Transaction{" +
                 ", dateTime=" + dateTime +
                 ", symbol='" + symbol + '\'' +
-                ", price=" + price +
+                ", priceUsd=" + priceUsd +
                 ", quantity=" + quantity +
                 ", action=" + action +
                 '}';
