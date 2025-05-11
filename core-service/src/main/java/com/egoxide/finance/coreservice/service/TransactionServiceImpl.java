@@ -74,10 +74,11 @@ public class TransactionServiceImpl implements TransactionService {
                         do {
 
                             Transaction buyTransaction = buyTransactionsDeque.peek();
+                            int buyYear = Objects.requireNonNull(buyTransaction).getDateTime().getYear();
                             int buyMonth = Objects.requireNonNull(buyTransaction).getDateTime().getMonthValue();
 
                             if (soldAmount.compareTo(valueOf(Objects.requireNonNull(buyTransaction.getQuantity()))) >= 0) {
-                                revenueEur -= (int) (buyTransaction.getPriceUsd() / getRate(transactionYear, buyMonth));
+                                revenueEur -= (int) (buyTransaction.getPriceUsd() / getRate(buyYear, buyMonth));
                                 buyTransactionsDeque.poll();
                             } else {
                                 BigDecimal buyingPricePerShare = valueOf(Objects.requireNonNull(buyTransaction).getPriceUsd() / buyTransaction.getQuantity());
@@ -109,8 +110,6 @@ public class TransactionServiceImpl implements TransactionService {
                     }
                 }
             }
-
-            System.out.println(profitLoss);
             tickerToRevenue.put(symbol, profitLoss);
         }
 

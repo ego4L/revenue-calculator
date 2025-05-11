@@ -8,15 +8,15 @@ public class TransactionId implements Serializable {
 
     private LocalDateTime dateTime;
     private String symbol;
-    private Integer price;
+    private Integer priceUsd;
 
     public TransactionId() {
     }
 
-    public TransactionId(LocalDateTime dateTime, String symbol, Integer price) {
+    public TransactionId(LocalDateTime dateTime, String symbol, Integer priceUsd) {
         this.dateTime = dateTime;
         this.symbol = symbol;
-        this.price = price;
+        this.priceUsd = priceUsd;
     }
 
     @Override
@@ -24,11 +24,11 @@ public class TransactionId implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TransactionId that = (TransactionId) o;
-        return Objects.equals(dateTime, that.dateTime) && Objects.equals(symbol, that.symbol) && Objects.equals(price, that.price);
+        return Objects.equals(dateTime, that.dateTime) && Objects.equals(symbol, that.symbol) && Objects.equals(priceUsd, that.priceUsd);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(dateTime, symbol, price);
+        return Objects.hash(dateTime, symbol, priceUsd);
     }
 }
