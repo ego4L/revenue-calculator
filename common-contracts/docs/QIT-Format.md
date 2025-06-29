@@ -93,7 +93,7 @@ HHMM [optional: SYMBOL QUANTITY] +/-AMOUNT
 ```
 1210 lmt 0 +255
 ```
-→ On Dec 10, **255 cents** were received (e.g., as dividends from holding **LMT**).
+→ At 12:10, **255 cents** were received (e.g., as dividends from holding **LMT**).
 
 ---
 
@@ -104,10 +104,10 @@ Commission fees represent costs associated with maintaining or operating the bro
 ### Format
 
 ```
-MMDD COMMISSION -AMOUNT
+HHMM COMMISSION -AMOUNT
 ```
 
-- **MMDD** — Date (month and day)
+- **HHMM** — Time in 24-hour format (e.g., `1720` = 17:20 or 5:20 PM)
 - **AMOUNT** — Fee amount in cents (always negative)
 
 ### Example
@@ -116,7 +116,7 @@ MMDD COMMISSION -AMOUNT
 0108 COMMISSION -002
 ```
 
-→ On January 8, a **commission fee** of **2 cents** was charged to the account.
+→ At 01:18, a **commission fee** of **2 cents** was charged to the account.
 
 
 ## Notes
