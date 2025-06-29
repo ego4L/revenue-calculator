@@ -10,6 +10,7 @@
         <option value="$PROJECT_DIR$/bulk-upload-qit-service/pom.xml" />
         <option value="$PROJECT_DIR$/core-service/pom.xml" />
         <option value="$PROJECT_DIR$/file-upload-service/pom.xml" />
+        <option value="$PROJECT_DIR$/common-contracts/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
