@@ -1,5 +1,8 @@
 # QIT Format Specification
 
+
+Version 0.0.1
+
 This document describes the **QIT (Quick Input Transactions)** format — a compact, human-friendly text format for recording financial transactions in chronological order with minimal user effort.
 
 ## Overview
