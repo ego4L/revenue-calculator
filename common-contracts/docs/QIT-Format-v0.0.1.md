@@ -50,8 +50,8 @@ HHMM [optional: SYMBOL QUANTITY] +/-AMOUNT
 
 - **HHMM** — Time in 24-hour format (e.g., `1720` = 17:20 or 5:20 PM)
 - **SYMBOL** — (Optional) Ticker symbol of the stock or asset (e.g., `amd`, `lmt`)
-- **QUANTITY** — Quantity of the asset traded (required)
-- **AMOUNT** — Transaction value in **cents**
+- **QUANTITY** — (Optional) Quantity of the asset traded
+- **AMOUNT** — Signed transaction value in **cents**
   - **+** indicates **deposit** or **income**
   - **−** indicates **withdrawal** or **expense**
 
