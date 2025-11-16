@@ -19,5 +19,4 @@ The project consists of two microservices:
 TBD.
 
 ## QIT Format
-
-TBD.
+https://github.com/ego4L/revenue-calculator/blob/master/common-contracts/docs/QIT-Format-v0.0.1.md
